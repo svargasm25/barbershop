@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { useTheme } from 'next-themes';
 import { useEffect, useState } from 'react';
-import { Scissors, Sun, Moon, LogOut, CalendarCheck, LayoutDashboard } from 'lucide-react';
+import { Scissors, Sun, Moon, LogOut, CalendarCheck, LayoutDashboard, Menu, X } from 'lucide-react';
 import { createClient } from '@/lib/supabase/client';
 import { LanguageSwitcher } from './LanguageSwitcher';
 import type { Profile } from '@/lib/types';
@@ -146,25 +146,73 @@ export function Header() {
                 </button>
               </div>
             ) : (
-              <Link href={`/${locale}/login`} className="btn btn-primary btn-sm">
+              <Link href={`/${locale}/login`} className="btn btn-primary btn-sm hidden-mobile">
                 {t('login')}
               </Link>
             )}
+
+            {/* Mobile menu toggle */}
+            <button
+              className="mobile-only"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              style={{
+                width: 36, height: 36,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'transparent',
+                border: 'none',
+                color: 'var(--text-primary)',
+                cursor: 'pointer',
+              }}
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            </button>
           </div>
         </div>
       </div>
 
+      {/* Mobile Menu Dropdown */}
+      {mobileMenuOpen && (
+        <div style={{
+          position: 'absolute', top: '64px', left: 0, right: 0,
+          background: 'var(--surface-1)',
+          borderBottom: '1px solid var(--surface-border)',
+          padding: '1rem 1.25rem',
+          display: 'flex', flexDirection: 'column', gap: '0.75rem',
+          boxShadow: 'var(--shadow-md)',
+        }} className="mobile-only">
+          {profile ? (
+            <>
+              {profile.role === 'client' && (
+                <>
+                  <NavLink href={`/${locale}/book`} icon={<Scissors size={16} />} label={t('book')} onClick={() => setMobileMenuOpen(false)} />
+                  <NavLink href={`/${locale}/appointments`} icon={<CalendarCheck size={16} />} label={t('appointments')} onClick={() => setMobileMenuOpen(false)} />
+                </>
+              )}
+              {profile.role === 'barber' && (
+                <NavLink href={`/${locale}/barber`} icon={<LayoutDashboard size={16} />} label={t('dashboard')} onClick={() => setMobileMenuOpen(false)} />
+              )}
+            </>
+          ) : (
+            <Link href={`/${locale}/login`} className="btn btn-primary" onClick={() => setMobileMenuOpen(false)}>
+              {t('login')}
+            </Link>
+          )}
+        </div>
+      )}
+
       <style>{`
-        @media (max-width: 640px) { .hidden-mobile { display: none !important; } }
+        @media (max-width: 768px) { .hidden-mobile { display: none !important; } }
+        @media (min-width: 769px) { .mobile-only { display: none !important; } }
       `}</style>
     </header>
   );
 }
 
-function NavLink({ href, icon, label }: { href: string; icon: React.ReactNode; label: string }) {
+function NavLink({ href, icon, label, onClick }: { href: string; icon: React.ReactNode; label: string; onClick?: () => void }) {
   return (
     <Link
       href={href}
+      onClick={onClick}
       style={{
         display: 'flex',
         alignItems: 'center',

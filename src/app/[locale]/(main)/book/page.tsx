@@ -252,7 +252,7 @@ export default function BookPage() {
       )}
 
       {/* Progress indicator */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginBottom: '2.5rem', maxWidth: 480 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginBottom: '2.5rem', width: '100%', maxWidth: 600 }}>
         {[1, 2, 3].map((s, i) => (
           <div key={s} style={{ display: 'flex', alignItems: 'center', flex: s < 3 ? 1 : 'none' }}>
             <div style={{
@@ -287,7 +287,7 @@ export default function BookPage() {
 
       {/* ── STEP 1: Date & Time ── */}
       {step === 1 && (
-        <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.5rem' }}>
+        <div className="animate-fade-in" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 320px), 1fr))', gap: '1.5rem' }}>
 
           {/* Calendar */}
           <div className="card" style={{ padding: '1.5rem' }}>
@@ -386,7 +386,7 @@ export default function BookPage() {
       {/* ── STEP 2: Haircut Style ── */}
       {step === 2 && (
         <div className="animate-fade-in">
-          <div style={{ position: 'relative', marginBottom: '1.5rem', maxWidth: 400 }}>
+          <div style={{ position: 'relative', marginBottom: '1.5rem', width: '100%', maxWidth: 500 }}>
             <Search size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
             <input
               className="input"
@@ -399,7 +399,7 @@ export default function BookPage() {
 
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))',
             gap: '1rem',
           }}>
             {filteredHaircuts.map((haircut) => {
@@ -440,7 +440,7 @@ export default function BookPage() {
           {/* Other — freeform text input */}
           {selectedHaircut && ((selectedHaircut.name as Record<string, string>).en?.toLowerCase().includes('other') ||
             (selectedHaircut.name as Record<string, string>).ko?.includes('기타')) && (
-            <div style={{ marginTop: '1.25rem', maxWidth: 480 }}>
+            <div style={{ marginTop: '1.25rem', width: '100%', maxWidth: 500 }}>
               <label className="label">{t('otherLabel')}</label>
               <input
                 className="input"
@@ -453,7 +453,7 @@ export default function BookPage() {
           )}
 
           {/* Room Number Input */}
-          <div style={{ marginTop: '1.5rem', maxWidth: 480 }}>
+          <div style={{ marginTop: '1.5rem', width: '100%', maxWidth: 500 }}>
             <label className="label">{t('roomNumberLabel')}</label>
             <input
               className="input"
@@ -468,7 +468,7 @@ export default function BookPage() {
 
       {/* ── STEP 3: Confirm ── */}
       {step === 3 && (
-        <div className="animate-fade-in" style={{ maxWidth: 520 }}>
+        <div className="animate-fade-in" style={{ width: '100%', maxWidth: 600, margin: '0 auto' }}>
           <div className="card" style={{ padding: '2rem' }}>
             <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1.5rem' }}>{t('summary')}</h2>
 
@@ -512,10 +512,10 @@ export default function BookPage() {
       )}
 
       {/* Navigation */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem', maxWidth: 520 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '2rem', width: '100%', maxWidth: 600, margin: '2rem auto 0' }}>
         {step > 1 ? (
           <button onClick={() => setStep(step - 1)} className="btn btn-secondary">
-            <ChevronLeft size={16} /> {t('back')}
+            <ChevronLeft size={16} /> <span className="hidden-mobile" style={{ marginLeft: 4 }}>{t('back')}</span>
           </button>
         ) : <div />}
         {step < 3 && (
