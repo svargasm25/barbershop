@@ -61,9 +61,9 @@ export function LanguageSwitcher() {
         aria-label="Select language"
         aria-expanded={open}
       >
-        <Globe size={14} style={{ color: 'var(--brand-primary)' }} />
+        <Globe size={14} style={{ color: 'var(--brand-primary)' }} className="hidden sm:block" />
         <span>{current.flag}</span>
-        <span>{current.label}</span>
+        <span className="hidden sm:inline">{current.label}</span>
         <ChevronDown
           size={12}
           style={{
