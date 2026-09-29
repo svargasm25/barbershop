@@ -43,7 +43,34 @@ export async function POST(request: Request) {
       `,
     };
 
+    const barberMailOptions = {
+      from: `"Dorm Barbershop System" <${process.env.EMAIL_USER}>`,
+      to: process.env.EMAIL_USER,
+      subject: '📅 New Appointment Booked!',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111; background-color: #F5F5F5; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
+          <h2 style="color: #003366; text-align: center; margin-bottom: 24px; font-weight: 800; font-size: 24px;">New Appointment Alert</h2>
+          <p style="font-size: 16px;">A new appointment has been booked by a client.</p>
+          
+          <div style="background-color: #ffffff; border-radius: 8px; padding: 16px; margin: 24px 0; border-left: 5px solid #003366; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
+            <p style="margin: 8px 0;"><strong>👤 Client:</strong> ${name || 'Unknown'}</p>
+            <p style="margin: 8px 0;"><strong>✉️ Email:</strong> ${email}</p>
+            <p style="margin: 8px 0;"><strong>📅 Date:</strong> ${date}</p>
+            <p style="margin: 8px 0;"><strong>⏰ Time:</strong> ${time}</p>
+            <p style="margin: 8px 0;"><strong>✂️ Style:</strong> ${style}</p>
+            <p style="margin: 8px 0;"><strong>🏠 Room:</strong> ${roomNumber}</p>
+          </div>
+          
+          <p style="font-size: 14px; color: #555555; text-align: center;">Check your dashboard for more details.</p>
+        </div>
+      `,
+    };
+
+    // Send email to client
     await transporter.sendMail(mailOptions);
+    
+    // Send email to barber
+    await transporter.sendMail(barberMailOptions);
 
     return NextResponse.json({ success: true });
   } catch (error: any) {
