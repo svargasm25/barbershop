@@ -1,0 +1,365 @@
+@import "tailwindcss";
+
+/* ============================================================
+   Dorm's Barbershop — Design Tokens
+   ============================================================ */
+
+:root {
+  /* Brand palette */
+  --brand-primary: #003366;       /* Barbershop Deep Blue */
+  --brand-primary-light: #004a99;
+  --brand-secondary: #D4AF37;     /* Classic Gold */
+  --brand-accent1: #A52A2A;       /* Barber Red */
+  --brand-accent2: #F5F5F5;       /* White/Light Gray */
+  --brand-danger: #e05555;
+
+  /* Background — light mode */
+  --background: #F5F5F5;
+  --foreground: #111111;
+
+  /* Surface */
+  --surface-1: #ffffff;
+  --surface-2: #e0e0e0;
+  --surface-3: #d1d1d1;
+  --surface-border: rgba(0,51,102,0.1);
+
+  /* Text */
+  --text-primary: #111111;
+  --text-secondary: #4a4845;
+  --text-muted: #8c8a86;
+
+  /* Status */
+  --status-pending: #D4AF37;
+  --status-completed: #5bb876;
+  --status-noshow: #e05555;
+  --status-cancelled: #7a7874;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-xl: 28px;
+
+  /* Shadow */
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 48px rgba(0,0,0,0.15);
+  --shadow-brand: 0 4px 24px rgba(0,51,102,0.2);
+  --shadow-blue: 0 4px 24px rgba(0,51,102,0.4);
+}
+
+/* Dark mode overrides */
+.dark {
+  --background: #111111;
+  --foreground: #FFFFFF;
+  --surface-1: #1a1a1a;
+  --surface-2: #222222;
+  --surface-3: #2e2e2e;
+  --surface-border: rgba(212,175,55,0.12);
+  --text-primary: #FFFFFF;
+  --text-secondary: #c0bdb8;
+  --text-muted: #7a7874;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.5);
+  --shadow-md: 0 4px 24px rgba(0,0,0,0.6);
+  --shadow-brand: 0 4px 24px rgba(212,175,55,0.25);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand: var(--brand-primary);
+  --color-surface-1: var(--surface-1);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --font-sans: "Geist", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ============================================================
+   Base Styles
+   ============================================================ */
+
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  line-height: 1.6;
+  min-height: 100dvh;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* ============================================================
+   Utility Classes
+   ============================================================ */
+
+/* Cards */
+.card {
+  background: var(--surface-1);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+.card-interactive {
+  cursor: pointer;
+}
+
+.card-interactive:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: rgba(212,175,55,0.25);
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(17, 17, 17, 0.75);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--surface-border);
+}
+
+.light .glass {
+  background: rgba(255, 255, 255, 0.8);
+}
+
+/* Buttons */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.625rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Gold primary button */
+.btn-primary {
+  background: linear-gradient(135deg, var(--brand-primary) 0%, var(--brand-primary-light) 100%);
+  color: #111111;
+  box-shadow: var(--shadow-brand);
+}
+
+.btn-primary:hover:not(:disabled) {
+  filter: brightness(1.08);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 32px rgba(212,175,55,0.4);
+}
+
+/* Blue secondary button */
+.btn-secondary {
+  background: var(--surface-3);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  background: var(--surface-2);
+  border-color: var(--brand-primary);
+}
+
+/* Blue action button */
+.btn-blue {
+  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-blue-light) 100%);
+  color: #ffffff;
+  box-shadow: var(--shadow-blue);
+}
+
+.btn-blue:hover:not(:disabled) {
+  filter: brightness(1.12);
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background: rgba(165, 42, 42, 0.15);
+  color: #e05555;
+  border: 1px solid rgba(165, 42, 42, 0.3);
+}
+
+.btn-danger:hover:not(:disabled) {
+  background: rgba(165, 42, 42, 0.25);
+}
+
+.btn-success {
+  background: rgba(91, 184, 118, 0.15);
+  color: #5bb876;
+  border: 1px solid rgba(91, 184, 118, 0.3);
+}
+
+.btn-success:hover:not(:disabled) {
+  background: rgba(91, 184, 118, 0.25);
+}
+
+.btn-lg {
+  padding: 0.875rem 2rem;
+  font-size: 1.0625rem;
+  border-radius: var(--radius-lg);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.875rem;
+  font-size: 0.8125rem;
+  border-radius: var(--radius-sm);
+}
+
+/* Inputs */
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  background: var(--surface-2);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.input:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px rgba(212,175,55,0.15);
+}
+
+.input::placeholder {
+  color: var(--text-muted);
+}
+
+/* Labels */
+.label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin-bottom: 0.4rem;
+}
+
+/* Status badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.25rem 0.625rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.badge-pending  { background: rgba(212,175,55,0.15);  color: var(--status-pending); }
+.badge-completed { background: rgba(91,184,118,0.15); color: var(--status-completed); }
+.badge-noshow   { background: rgba(224,85,85,0.15);   color: var(--status-noshow); }
+.badge-cancelled { background: rgba(122,120,116,0.15);color: var(--status-cancelled); }
+
+/* Gradient text — gold */
+.text-gradient {
+  background: linear-gradient(135deg, var(--brand-primary), var(--brand-primary-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gradient text — blue */
+.text-gradient-blue {
+  background: linear-gradient(135deg, var(--brand-blue), var(--brand-blue-light));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: var(--surface-border);
+  margin: 1.5rem 0;
+}
+
+/* Page container */
+.page-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}
+
+/* Section header */
+.section-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: var(--surface-1); }
+::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--brand-primary); }
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateX(-12px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.animate-fade-in   { animation: fadeIn 0.4s ease forwards; }
+.animate-slide-in  { animation: slideIn 0.3s ease forwards; }
+.animate-spin      { animation: spin 0.8s linear infinite; }
+
+/* Loading spinner */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--surface-3);
+  border-top-color: var(--brand-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  display: inline-block;
+}
+
+/* Barber pole stripe accent */
+.pole-accent {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--brand-red) 0px,
+    var(--brand-red) 8px,
+    #ffffff 8px,
+    #ffffff 16px,
+    var(--brand-blue) 16px,
+    var(--brand-blue) 24px
+  );
+}
