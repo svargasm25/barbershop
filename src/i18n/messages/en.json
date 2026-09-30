@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "Room Number",
+    "roomNumberPlaceholder": "e.g. A302"
   },
   "booking": {
     "title": "Book an Appointment",
     "step1": "Date & Time",
-    "step2": "Haircut Style",
-    "step3": "Confirm",
+    "step2": "Confirm",
     "selectDate": "Select a date",
     "selectTime": "Select a time slot",
     "available": "Available",
     "unavailable": "Unavailable",
-    "searchStyle": "Search styles...",
-    "selectStyle": "Choose a haircut style",
     "summary": "Booking Summary",
     "date": "Date",
     "time": "Time",
-    "style": "Style",
     "basePrice": "Base Price",
     "penaltyFee": "Outstanding Penalty",
     "total": "Total",
@@ -78,11 +76,7 @@
     "back": "Back",
     "pendingBlock": "You already have a pending appointment",
     "pendingBlockDesc": "You can only have one active appointment at a time. Please cancel your current appointment before booking a new one.",
-    "viewAppointments": "View My Appointments",
-    "otherLabel": "Describe the style you want",
-    "otherPlaceholder": "e.g. same as last time, taper fade with texture on top…",
-    "roomNumberLabel": "Room Number",
-    "roomNumberPlaceholder": "e.g. A302"
+    "viewAppointments": "View My Appointments"
   },
   "appointments": {
     "title": "My Appointments",

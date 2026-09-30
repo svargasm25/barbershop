@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "Номер комнаты",
+    "roomNumberPlaceholder": "Например: A302"
   },
   "booking": {
     "title": "Записаться на стрижку",
     "step1": "Дата и время",
-    "step2": "Стиль стрижки",
-    "step3": "Подтверждение",
+    "step2": "Подтверждение",
     "selectDate": "Выберите дату",
     "selectTime": "Выберите временной слот",
     "available": "Доступно",
     "unavailable": "Недоступно",
-    "searchStyle": "Поиск стилей...",
-    "selectStyle": "Выберите стиль стрижки",
     "summary": "Сводка записи",
     "date": "Дата",
     "time": "Время",
-    "style": "Стиль",
     "basePrice": "Базовая цена",
     "penaltyFee": "Неоплаченный штраф",
     "total": "Итого",
@@ -78,11 +76,7 @@
     "back": "Назад",
     "pendingBlock": "У вас уже есть активная запись",
     "pendingBlockDesc": "Вы можете иметь только одну активную запись одновременно. Отмените текущую запись, прежде чем бронировать новую.",
-    "viewAppointments": "Мои записи",
-    "otherLabel": "Опишите желаемый стиль",
-    "otherPlaceholder": "Например: как в прошлый раз, taper fade с текстурой наверху…",
-    "roomNumberLabel": "Номер комнаты",
-    "roomNumberPlaceholder": "Например: A302"
+    "viewAppointments": "Мои записи"
   },
   "appointments": {
     "title": "Мои записи",

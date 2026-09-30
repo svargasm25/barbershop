@@ -35,7 +35,7 @@ export default function BarberDashboard() {
     const supabase = createClient();
     const { data: apts } = await supabase
       .from('appointments')
-      .select('*, profiles(*), haircuts(*)')
+      .select('*, profiles(*)')
       .eq('date', selectedDate)
       .in('status', ['pending', 'completed', 'no-show'])
       .order('time');
@@ -120,9 +120,6 @@ export default function BarberDashboard() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
               {appointments.map((apt) => {
                 const client = apt.profiles;
-                const haircutName = apt.haircuts
-                  ? ((apt.haircuts.name as Record<string, string>)[locale] ?? apt.haircuts.name.en)
-                  : apt.haircut_style ?? '—';
                 const total = BASE_PRICE + (apt.penalty_applied ?? 0);
                 const statusIcon = apt.status === 'completed'
                   ? <CheckCircle2 size={14} style={{ color: 'var(--status-completed)' }} />
@@ -153,9 +150,8 @@ export default function BarberDashboard() {
 
                           <div>
                             <div style={{ fontWeight: 700 }}>{client?.name ?? 'Unknown'}</div>
-                            <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>{haircutName}</div>
-                            {apt.room_number && (
-                              <div style={{ fontSize: '0.7rem', color: 'var(--brand-accent)', marginTop: '0.15rem' }}>🏠 Room {apt.room_number}</div>
+                            {(apt.room_number || client?.room_number) && (
+                              <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>🏠 Room {apt.room_number || client?.room_number}</div>
                             )}
                           </div>
                         </div>

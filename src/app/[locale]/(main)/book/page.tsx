@@ -5,36 +5,13 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
-import { generateAndDownloadICS } from '@/lib/ics';
 import {
   format, addDays, startOfMonth, endOfMonth, eachDayOfInterval,
   isBefore, isToday, isSameDay, startOfDay,
 } from 'date-fns';
-import { ChevronLeft, ChevronRight, Check, Search, AlertTriangle, CalendarDays } from 'lucide-react';
-import type { Haircut, Profile, BlockedSlot } from '@/lib/types';
+import { ChevronLeft, ChevronRight, Check, AlertTriangle, CalendarDays } from 'lucide-react';
+import type { Profile, BlockedSlot } from '@/lib/types';
 import { BASE_PRICE } from '@/lib/types';
-
-// Generate 30-min slots from 10:00 to 01:00 (next day = 25 slots)
-function generateSlots(): string[] {
-  const slots: string[] = [];
-  for (let h = 10; h <= 24; h++) {
-    const displayH = h > 23 ? h - 24 : h;
-    const label = `${String(h === 24 ? 0 : h).padStart(2, '0')}:00`;
-    slots.push(label);
-    if (h < 24) {
-      slots.push(`${String(h).padStart(2, '0')}:30`);
-    }
-  }
-  // Actually: 10:00–01:00 = 10:00,10:30,...,00:00,00:30,01:00 = 31 slots
-  const result: string[] = [];
-  for (let h = 10; h <= 25; h++) {
-    if (h > 25) break;
-    const realH = h >= 24 ? h - 24 : h;
-    result.push(`${String(realH).padStart(2, '0')}:00`);
-    if (h < 25) result.push(`${String(realH).padStart(2, '0')}:30`);
-  }
-  return result;
-}
 
 const ALL_SLOTS = [
   '10:00','10:30','11:00','11:30','12:00','12:30','13:00','13:30',
@@ -51,17 +28,11 @@ export default function BookPage() {
   const [step, setStep] = useState(1);
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-  const [selectedHaircut, setSelectedHaircut] = useState<Haircut | null>(null);
-  const [otherText, setOtherText] = useState('');
-  const [roomNumber, setRoomNumber] = useState('');
-  const [search, setSearch] = useState('');
   const [currentMonth, setCurrentMonth] = useState(new Date());
 
-  const [haircuts, setHaircuts] = useState<Haircut[]>([]);
   const [bookedSlots, setBookedSlots] = useState<string[]>([]);
   const [blockedSlots, setBlockedSlots] = useState<BlockedSlot[]>([]);
   const [profile, setProfile] = useState<Profile | null>(null);
-  const [loading, setLoading] = useState(false);
   const [confirming, setConfirming] = useState(false);
   const [done, setDone] = useState(false);
   const [hasPendingAppointment, setHasPendingAppointment] = useState(false);
@@ -83,7 +54,6 @@ export default function BookPage() {
         .limit(1);
       if (pending && pending.length > 0) setHasPendingAppointment(true);
     });
-    supabase.from('haircuts').select('*').eq('active', true).then(({ data }) => setHaircuts(data ?? []));
     supabase.from('blocked_slots').select('*').then(({ data }) => setBlockedSlots(data ?? []));
   }, []);
 
@@ -106,16 +76,11 @@ export default function BookPage() {
     return blockedSlots.some((b) => b.date === dateStr && b.time.slice(0, 5) === slot);
   }
 
-  const filteredHaircuts = haircuts.filter((h) => {
-    const name = (h.name as Record<string, string>)[locale] ?? h.name.en ?? '';
-    return name.toLowerCase().includes(search.toLowerCase());
-  });
-
   const penaltyFee = profile?.penalty_fee ?? 0;
   const totalPrice = BASE_PRICE + penaltyFee;
 
   async function handleConfirm() {
-    if (!selectedDate || !selectedTime || !selectedHaircut || !profile) return;
+    if (!selectedDate || !selectedTime || !profile) return;
     if (hasPendingAppointment) return;
     setConfirming(true);
     setBookError('');
@@ -134,22 +99,15 @@ export default function BookPage() {
       return;
     }
 
-    const isOther = (selectedHaircut.name as Record<string, string>).en?.toLowerCase().includes('other');
-    const haircutLabel = isOther
-      ? (otherText.trim() || 'Other')
-      : ((selectedHaircut.name as Record<string, string>)[locale] ?? selectedHaircut.name.en);
-
     const { error } = await supabase.from('appointments').insert({
       client_id: profile.id,
-      haircut_id: selectedHaircut.id,
       date: format(selectedDate, 'yyyy-MM-dd'),
       time: selectedTime + ':00',
-      haircut_style: haircutLabel,
-      room_number: roomNumber.trim(),
+      room_number: profile.room_number ?? '',
       penalty_applied: penaltyFee,
     });
     if (!error) {
-      // Enviar correo de confirmación si tiene correo
+      // Send confirmation email if user has email
       if (profile.email) {
         fetch('/api/email', {
           method: 'POST',
@@ -159,8 +117,7 @@ export default function BookPage() {
             name: profile.name,
             date: format(selectedDate, 'PPP'),
             time: selectedTime,
-            style: haircutLabel,
-            roomNumber: roomNumber.trim()
+            roomNumber: profile.room_number ?? ''
           })
         }).catch(err => console.error('Failed to send email:', err));
       }
@@ -251,10 +208,10 @@ export default function BookPage() {
         </div>
       )}
 
-      {/* Progress indicator */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginBottom: '2.5rem', width: '100%', maxWidth: 600 }}>
-        {[1, 2, 3].map((s, i) => (
-          <div key={s} style={{ display: 'flex', alignItems: 'center', flex: s < 3 ? 1 : 'none' }}>
+      {/* Progress indicator — 2 steps */}
+      <div style={{ display: 'flex', alignItems: 'center', gap: '0', marginBottom: '2.5rem', width: '100%', maxWidth: 400 }}>
+        {[1, 2].map((s) => (
+          <div key={s} style={{ display: 'flex', alignItems: 'center', flex: s < 2 ? 1 : 'none' }}>
             <div style={{
               width: 32, height: 32, borderRadius: '50%', flexShrink: 0,
               background: step >= s ? 'var(--brand-primary)' : 'var(--surface-3)',
@@ -271,9 +228,9 @@ export default function BookPage() {
               marginLeft: '0.4rem',
               whiteSpace: 'nowrap',
             }}>
-              {s === 1 ? t('step1') : s === 2 ? t('step2') : t('step3')}
+              {s === 1 ? t('step1') : t('step2')}
             </span>
-            {s < 3 && (
+            {s < 2 && (
               <div style={{
                 flex: 1, height: 2,
                 background: step > s ? 'var(--brand-primary)' : 'var(--surface-3)',
@@ -383,91 +340,8 @@ export default function BookPage() {
         </div>
       )}
 
-      {/* ── STEP 2: Haircut Style ── */}
+      {/* ── STEP 2: Confirm ── */}
       {step === 2 && (
-        <div className="animate-fade-in">
-          <div style={{ position: 'relative', marginBottom: '1.5rem', width: '100%', maxWidth: 500 }}>
-            <Search size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
-            <input
-              className="input"
-              placeholder={t('searchStyle')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              style={{ paddingLeft: '2.25rem' }}
-            />
-          </div>
-
-          <div style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 250px), 1fr))',
-            gap: '1rem',
-          }}>
-            {filteredHaircuts.map((haircut) => {
-              const name = (haircut.name as Record<string, string>)[locale] ?? haircut.name.en;
-              const desc = haircut.description ? (haircut.description as Record<string, string>)[locale] ?? '' : '';
-              const sel = selectedHaircut?.id === haircut.id;
-              const isOther = name.toLowerCase().includes('other') || name.includes('기타') || name.includes('Sonstiges') || name.includes('Другое') || name.includes('Autre');
-              return (
-                <button
-                  key={haircut.id}
-                  onClick={() => { setSelectedHaircut(haircut); if (!isOther) setOtherText(''); }}
-                  style={{
-                    padding: '1rem',
-                    borderRadius: 'var(--radius-md)',
-                    border: sel ? '2px solid var(--brand-primary)' : '1px solid var(--surface-border)',
-                    background: sel ? 'rgba(212,175,55,0.08)' : 'var(--surface-1)',
-                    cursor: 'pointer', textAlign: 'left',
-                    transition: 'all 0.2s',
-                    position: 'relative',
-                  }}
-                >
-                  {sel && (
-                    <div style={{
-                      position: 'absolute', top: 8, right: 8,
-                      background: 'var(--brand-primary)', borderRadius: '50%',
-                      width: 20, height: 20, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    }}>
-                      <Check size={11} color="#111111" />
-                    </div>
-                  )}
-                  <div style={{ fontWeight: 700, fontSize: '0.9375rem', marginBottom: '0.375rem', color: sel ? 'var(--brand-primary)' : 'var(--text-primary)' }}>{name}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>{desc}</div>
-                </button>
-              );
-            })}
-          </div>
-
-          {/* Other — freeform text input */}
-          {selectedHaircut && ((selectedHaircut.name as Record<string, string>).en?.toLowerCase().includes('other') ||
-            (selectedHaircut.name as Record<string, string>).ko?.includes('기타')) && (
-            <div style={{ marginTop: '1.25rem', width: '100%', maxWidth: 500 }}>
-              <label className="label">{t('otherLabel')}</label>
-              <input
-                className="input"
-                placeholder={t('otherPlaceholder')}
-                value={otherText}
-                onChange={(e) => setOtherText(e.target.value)}
-                maxLength={100}
-              />
-            </div>
-          )}
-
-          {/* Room Number Input */}
-          <div style={{ marginTop: '1.5rem', width: '100%', maxWidth: 500 }}>
-            <label className="label">{t('roomNumberLabel')}</label>
-            <input
-              className="input"
-              placeholder={t('roomNumberPlaceholder')}
-              value={roomNumber}
-              onChange={(e) => setRoomNumber(e.target.value)}
-              maxLength={20}
-            />
-          </div>
-        </div>
-      )}
-
-      {/* ── STEP 3: Confirm ── */}
-      {step === 3 && (
         <div className="animate-fade-in" style={{ width: '100%', maxWidth: 600, margin: '0 auto' }}>
           <div className="card" style={{ padding: '2rem' }}>
             <h2 style={{ fontSize: '1.125rem', fontWeight: 700, marginBottom: '1.5rem' }}>{t('summary')}</h2>
@@ -475,7 +349,6 @@ export default function BookPage() {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem', marginBottom: '1.5rem' }}>
               <SummaryRow label={t('date')} value={selectedDate ? format(selectedDate, 'PPP') : ''} />
               <SummaryRow label={t('time')} value={selectedTime ?? ''} />
-              <SummaryRow label={t('style')} value={selectedHaircut ? ((selectedHaircut.name as Record<string, string>)[locale] ?? selectedHaircut.name.en) : ''} />
               <div className="divider" />
               <SummaryRow label={t('basePrice')} value={`₩${BASE_PRICE.toLocaleString()}`} />
               {penaltyFee > 0 && (
@@ -518,16 +391,13 @@ export default function BookPage() {
             <ChevronLeft size={16} /> <span className="hidden-mobile" style={{ marginLeft: 4 }}>{t('back')}</span>
           </button>
         ) : <div />}
-        {step < 3 && (
+        {step < 2 && (
           <button
             onClick={() => setStep(step + 1)}
             className="btn btn-primary"
             disabled={
               hasPendingAppointment ||
-              (step === 1 && (!selectedDate || !selectedTime)) ||
-              (step === 2 && (!selectedHaircut ||
-                ((selectedHaircut.name as Record<string, string>).en?.toLowerCase().includes('other') && !otherText.trim()) ||
-                !roomNumber.trim()))
+              (step === 1 && (!selectedDate || !selectedTime))
             }
           >
             {t('next')} <ChevronRight size={16} />

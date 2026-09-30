@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "호실",
+    "roomNumberPlaceholder": "예) A302"
   },
   "booking": {
     "title": "예약하기",
     "step1": "날짜 및 시간",
-    "step2": "헤어 스타일",
-    "step3": "예약 확인",
+    "step2": "예약 확인",
     "selectDate": "날짜를 선택하세요",
     "selectTime": "시간을 선택하세요",
     "available": "가능",
     "unavailable": "불가",
-    "searchStyle": "스타일 검색...",
-    "selectStyle": "헤어스타일을 선택하세요",
     "summary": "예약 요약",
     "date": "날짜",
     "time": "시간",
-    "style": "스타일",
     "basePrice": "기본 요금",
     "penaltyFee": "미납 벌금",
     "total": "합계",
@@ -78,11 +76,7 @@
     "back": "이전",
     "pendingBlock": "이미 대기 중인 예약이 있습니다",
     "pendingBlockDesc": "한 번에 하나의 예약만 가능합니다. 새 예약을 하려면 현재 예약을 먼저 취소해 주세요.",
-    "viewAppointments": "내 예약 보기",
-    "otherLabel": "원하는 스타일을 설명해 주세요",
-    "otherPlaceholder": "예) 지난번과 똑같이, 사이드 페이드에 위에 텍스쳐 넣어서…",
-    "roomNumberLabel": "호실",
-    "roomNumberPlaceholder": "예) A302"
+    "viewAppointments": "내 예약 보기"
   },
   "appointments": {
     "title": "내 예약",

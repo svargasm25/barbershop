@@ -4,7 +4,7 @@ import nodemailer from 'nodemailer';
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { email, name, date, time, style, roomNumber } = body;
+    const { email, name, date, time, roomNumber } = body;
 
     if (!email) {
       return NextResponse.json({ error: 'No email provided' }, { status: 400 });
@@ -32,8 +32,7 @@ export async function POST(request: Request) {
           <div style="background-color: #ffffff; border-radius: 8px; padding: 16px; margin: 24px 0; border-left: 5px solid #D4AF37; box-shadow: 0 2px 8px rgba(0,0,0,0.05);">
             <p style="margin: 8px 0;"><strong>📅 Date:</strong> ${date}</p>
             <p style="margin: 8px 0;"><strong>⏰ Time:</strong> ${time}</p>
-            <p style="margin: 8px 0;"><strong>✂️ Style:</strong> ${style}</p>
-            <p style="margin: 8px 0;"><strong>🏠 Room:</strong> ${roomNumber}</p>
+            ${roomNumber ? `<p style="margin: 8px 0;"><strong>🏠 Room:</strong> ${roomNumber}</p>` : ''}
           </div>
           
           <p style="font-size: 14px; color: #555555;">If you need to cancel, please log in to your dashboard and do it before the appointment to avoid penalties.</p>
@@ -57,8 +56,7 @@ export async function POST(request: Request) {
             <p style="margin: 8px 0;"><strong>✉️ Email:</strong> ${email}</p>
             <p style="margin: 8px 0;"><strong>📅 Date:</strong> ${date}</p>
             <p style="margin: 8px 0;"><strong>⏰ Time:</strong> ${time}</p>
-            <p style="margin: 8px 0;"><strong>✂️ Style:</strong> ${style}</p>
-            <p style="margin: 8px 0;"><strong>🏠 Room:</strong> ${roomNumber}</p>
+            ${roomNumber ? `<p style="margin: 8px 0;"><strong>🏠 Room:</strong> ${roomNumber}</p>` : ''}
           </div>
           
           <p style="font-size: 14px; color: #555555; text-align: center;">Check your dashboard for more details.</p>

@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import { createClient } from '@/lib/supabase/client';
 import { format, parseISO, differenceInMinutes } from 'date-fns';
-import { CalendarX2, Scissors, Clock, AlertTriangle, CheckCircle2, XCircle, MinusCircle } from 'lucide-react';
+import { CalendarX2, Clock, AlertTriangle, CheckCircle2, XCircle, MinusCircle } from 'lucide-react';
 import Link from 'next/link';
 import type { Appointment } from '@/lib/types';
 import { BASE_PRICE } from '@/lib/types';
@@ -32,7 +32,7 @@ export default function AppointmentsPage() {
     if (!user) return;
     const { data } = await supabase
       .from('appointments')
-      .select('*, haircuts(*)')
+      .select('*')
       .eq('client_id', user.id)
       .order('date', { ascending: false })
       .order('time', { ascending: false });
@@ -89,9 +89,6 @@ export default function AppointmentsPage() {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
                 {upcoming.map((apt) => {
                   const cancellable = canCancel(apt);
-                  const haircutName = apt.haircuts
-                    ? ((apt.haircuts.name as Record<string, string>)[locale] ?? apt.haircuts.name.en)
-                    : apt.haircut_style ?? '—';
 
                   return (
                     <div key={apt.id} className="card" style={{ padding: '1.25rem 1.5rem' }}>
@@ -102,12 +99,14 @@ export default function AppointmentsPage() {
                             background: 'rgba(201,169,110,0.1)',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
                           }}>
-                            <Scissors size={18} style={{ color: 'var(--brand-primary)' }} />
+                            <Clock size={18} style={{ color: 'var(--brand-primary)' }} />
                           </div>
                           <div>
-                            <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '0.2rem' }}>{haircutName}</div>
+                            <div style={{ fontWeight: 700, fontSize: '1rem', marginBottom: '0.2rem' }}>
+                              {format(parseISO(apt.date), 'PPP')}
+                            </div>
                             <div style={{ fontSize: '0.8125rem', color: 'var(--text-secondary)' }}>
-                              {format(parseISO(apt.date), 'PPP')} · {apt.time.slice(0, 5)}
+                              {apt.time.slice(0, 5)}
                             </div>
                             {apt.penalty_applied > 0 && (
                               <div style={{ fontSize: '0.75rem', color: 'var(--brand-danger)', marginTop: '0.2rem' }}>
@@ -160,18 +159,15 @@ export default function AppointmentsPage() {
               </h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                 {past.map((apt) => {
-                  const haircutName = apt.haircuts
-                    ? ((apt.haircuts.name as Record<string, string>)[locale] ?? apt.haircuts.name.en)
-                    : apt.haircut_style ?? '—';
                   const statusKey = apt.status === 'no-show' ? 'noShow' : apt.status;
 
                   return (
                     <div key={apt.id} className="card" style={{ padding: '1rem 1.5rem', opacity: 0.7 }}>
                       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
                         <div>
-                          <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{haircutName}</div>
+                          <div style={{ fontWeight: 600, fontSize: '0.9375rem' }}>{format(parseISO(apt.date), 'PPP')}</div>
                           <div style={{ fontSize: '0.8125rem', color: 'var(--text-muted)' }}>
-                            {format(parseISO(apt.date), 'PPP')} · {apt.time.slice(0, 5)}
+                            {apt.time.slice(0, 5)}
                           </div>
                         </div>
                         <span className={`badge badge-${apt.status === 'no-show' ? 'noshow' : apt.status}`}>

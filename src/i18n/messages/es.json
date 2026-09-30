@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "Número de habitación",
+    "roomNumberPlaceholder": "Ej. A302"
   },
   "booking": {
     "title": "Reservar una cita",
     "step1": "Fecha y hora",
-    "step2": "Estilo de corte",
-    "step3": "Confirmación",
+    "step2": "Confirmación",
     "selectDate": "Selecciona una fecha",
     "selectTime": "Selecciona un horario",
     "available": "Disponible",
     "unavailable": "No disponible",
-    "searchStyle": "Buscar estilos...",
-    "selectStyle": "Elige un estilo de corte",
     "summary": "Resumen de la reserva",
     "date": "Fecha",
     "time": "Hora",
-    "style": "Estilo",
     "basePrice": "Precio base",
     "penaltyFee": "Multa pendiente",
     "total": "Total",
@@ -78,11 +76,7 @@
     "back": "Atrás",
     "pendingBlock": "Ya tienes una cita pendiente",
     "pendingBlockDesc": "Solo puedes tener una cita activa a la vez. Cancela tu cita actual antes de reservar una nueva.",
-    "viewAppointments": "Ver mis citas",
-    "otherLabel": "Describe el estilo que quieres",
-    "otherPlaceholder": "Ej. igual que la última vez, degradado medio con textura arriba…",
-    "roomNumberLabel": "Número de habitación",
-    "roomNumberPlaceholder": "Ej. A302"
+    "viewAppointments": "Ver mis citas"
   },
   "appointments": {
     "title": "Mis Citas",

@@ -6,7 +6,7 @@ import { useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { format, parseISO } from 'date-fns';
-import { ChevronLeft, User, GraduationCap, Home, Scissors, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
+import { ChevronLeft, User, GraduationCap, Home, CheckCircle2, XCircle, AlertTriangle } from 'lucide-react';
 import Link from 'next/link';
 import type { Appointment, Profile } from '@/lib/types';
 import { BASE_PRICE, PENALTY_FEE } from '@/lib/types';
@@ -31,7 +31,7 @@ export default function AppointmentCheckout({
     const supabase = createClient();
     supabase
       .from('appointments')
-      .select('*, profiles(*), haircuts(*)')
+      .select('*, profiles(*)')
       .eq('id', id)
       .single()
       .then(({ data }) => {
@@ -71,9 +71,7 @@ export default function AppointmentCheckout({
     return <div style={{ padding: '2rem', textAlign: 'center', color: 'var(--text-muted)' }}>Appointment not found.</div>;
   }
 
-  const haircutName = apt.haircuts
-    ? ((apt.haircuts.name as Record<string, string>)[locale] ?? apt.haircuts.name.en)
-    : apt.haircut_style ?? '—';
+  const roomNumber = apt.room_number || client.room_number || '—';
   const penaltyApplied = apt.penalty_applied ?? 0;
   const total = BASE_PRICE + penaltyApplied;
 
@@ -121,12 +119,7 @@ export default function AppointmentCheckout({
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.875rem' }}>
             <InfoRow icon={<User size={15} />} label={t('client')} value={client.name ?? '—'} />
             <InfoRow icon={<GraduationCap size={15} />} label={t('grade')} value={client.university_grade ?? '—'} />
-            {apt.room_number ? (
-              <InfoRow icon={<Home size={15} />} label="Room" value={apt.room_number} />
-            ) : (
-              <InfoRow icon={<Home size={15} />} label={t('dorm')} value={client.dorm_resident ? '✅ Yes' : '❌ No'} />
-            )}
-            <InfoRow icon={<Scissors size={15} />} label="Style" value={haircutName} />
+            <InfoRow icon={<Home size={15} />} label="Room" value={roomNumber} />
             <InfoRow icon={<></>} label="Date & Time" value={`${format(parseISO(apt.date), 'PPP')} · ${apt.time.slice(0, 5)}`} />
           </div>
         </div>

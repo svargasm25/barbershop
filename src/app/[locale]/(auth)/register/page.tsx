@@ -5,7 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useLocale } from 'next-intl';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/client';
-import { Scissors, Mail, Lock, User, GraduationCap, Home, AlertCircle } from 'lucide-react';
+import { Scissors, Mail, Lock, User, GraduationCap, Home, DoorOpen, AlertCircle } from 'lucide-react';
 
 const GRADES = ['1', '2', '3', '4', 'grad'] as const;
 
@@ -19,6 +19,7 @@ export default function RegisterPage() {
     name: '',
     university_grade: '1',
     dorm_resident: false,
+    room_number: '',
   });
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -57,6 +58,7 @@ export default function RegisterPage() {
         name: form.name,
         university_grade: form.university_grade,
         dorm_resident: form.dorm_resident,
+        room_number: form.room_number.trim() || null,
         email: form.email,
       });
 
@@ -201,6 +203,24 @@ export default function RegisterPage() {
                   {val ? t('dormResidentYes') : t('dormResidentNo')}
                 </button>
               ))}
+            </div>
+          </div>
+
+          {/* Room Number */}
+          <div>
+            <label className="label" htmlFor="reg-room">{t('roomNumber')}</label>
+            <div style={{ position: 'relative' }}>
+              <DoorOpen size={15} style={{ position: 'absolute', left: 12, top: '50%', transform: 'translateY(-50%)', color: 'var(--text-muted)' }} />
+              <input
+                id="reg-room"
+                className="input"
+                type="text"
+                placeholder={t('roomNumberPlaceholder')}
+                value={form.room_number}
+                onChange={(e) => update('room_number', e.target.value)}
+                maxLength={20}
+                style={{ paddingLeft: '2.25rem' }}
+              />
             </div>
           </div>
 

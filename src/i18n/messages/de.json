@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "Zimmernummer",
+    "roomNumberPlaceholder": "z.B. A302"
   },
   "booking": {
     "title": "Termin buchen",
     "step1": "Datum & Uhrzeit",
-    "step2": "Frisurstil",
-    "step3": "Bestätigen",
+    "step2": "Bestätigen",
     "selectDate": "Datum auswählen",
     "selectTime": "Zeitfenster auswählen",
     "available": "Verfügbar",
     "unavailable": "Nicht verfügbar",
-    "searchStyle": "Stile suchen...",
-    "selectStyle": "Frisurstil wählen",
     "summary": "Buchungsübersicht",
     "date": "Datum",
     "time": "Uhrzeit",
-    "style": "Stil",
     "basePrice": "Grundpreis",
     "penaltyFee": "Ausstehende Strafe",
     "total": "Gesamt",
@@ -78,11 +76,7 @@
     "back": "Zurück",
     "pendingBlock": "Sie haben bereits einen ausstehenden Termin",
     "pendingBlockDesc": "Sie können nur einen aktiven Termin gleichzeitig haben. Bitte stornieren Sie Ihren aktuellen Termin, bevor Sie einen neuen buchen.",
-    "viewAppointments": "Meine Termine anzeigen",
-    "otherLabel": "Beschreiben Sie den gewünschten Stil",
-    "otherPlaceholder": "z.B. wie letztes Mal, Taper Fade mit Textur oben…",
-    "roomNumberLabel": "Zimmernummer",
-    "roomNumberPlaceholder": "z.B. A302"
+    "viewAppointments": "Meine Termine anzeigen"
   },
   "appointments": {
     "title": "Meine Termine",

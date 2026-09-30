@@ -1,7 +1,7 @@
 import { createServerClient } from '@supabase/ssr';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
-import { Mail, GraduationCap, Home, AlertTriangle } from 'lucide-react';
+import { Mail, GraduationCap, Home, DoorOpen, AlertTriangle } from 'lucide-react';
 import { getTranslations } from 'next-intl/server';
 
 export default async function ProfilePage({ params }: { params: Promise<{ locale: string }> }) {
@@ -82,6 +82,18 @@ export default async function ProfilePage({ params }: { params: Promise<{ locale
               <p style={{ fontWeight: 600 }}>{profile.dorm_resident ? 'Sí' : 'No'}</p>
             </div>
           </div>
+
+          {profile.room_number && (
+            <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+              <div style={{ width: 36, height: 36, borderRadius: '50%', background: 'var(--surface-2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <DoorOpen size={16} style={{ color: 'var(--text-secondary)' }} />
+              </div>
+              <div>
+                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 600 }}>Habitación</p>
+                <p style={{ fontWeight: 600 }}>{profile.room_number}</p>
+              </div>
+            </div>
+          )}
 
           {profile.penalty_fee > 0 && (
             <>

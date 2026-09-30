@@ -50,23 +50,21 @@
     "newPassword": "New Password",
     "savePassword": "Save Password",
     "checkEmail": "Check your email for the reset link.",
-    "passwordUpdated": "Password updated successfully. You can now login."
+    "passwordUpdated": "Password updated successfully. You can now login.",
+    "roomNumber": "Numéro de chambre",
+    "roomNumberPlaceholder": "Ex. A302"
   },
   "booking": {
     "title": "Prendre rendez-vous",
     "step1": "Date et heure",
-    "step2": "Style de coupe",
-    "step3": "Confirmation",
+    "step2": "Confirmation",
     "selectDate": "Sélectionnez une date",
     "selectTime": "Sélectionnez un créneau",
     "available": "Disponible",
     "unavailable": "Indisponible",
-    "searchStyle": "Rechercher un style...",
-    "selectStyle": "Choisir un style de coupe",
     "summary": "Récapitulatif",
     "date": "Date",
     "time": "Heure",
-    "style": "Style",
     "basePrice": "Prix de base",
     "penaltyFee": "Pénalité en attente",
     "total": "Total",
@@ -78,11 +76,7 @@
     "back": "Retour",
     "pendingBlock": "Vous avez déjà un rendez-vous en attente",
     "pendingBlockDesc": "Vous ne pouvez avoir qu'un seul rendez-vous actif à la fois. Annulez votre rendez-vous actuel avant d'en réserver un nouveau.",
-    "viewAppointments": "Voir mes rendez-vous",
-    "otherLabel": "Décrivez le style souhaité",
-    "otherPlaceholder": "Ex. comme la dernière fois, taper fade avec texture sur le dessus…",
-    "roomNumberLabel": "Numéro de chambre",
-    "roomNumberPlaceholder": "Ex. A302"
+    "viewAppointments": "Voir mes rendez-vous"
   },
   "appointments": {
     "title": "Mes rendez-vous",

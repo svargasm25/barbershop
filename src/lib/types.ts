@@ -8,6 +8,7 @@ export interface Profile {
   name: string | null;
   university_grade: string | null;
   dorm_resident: boolean;
+  room_number: string | null;
   penalty_fee: number;
   created_at: string;
 }
