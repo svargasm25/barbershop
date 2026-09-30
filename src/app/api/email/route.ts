@@ -44,7 +44,7 @@ export async function POST(request: Request) {
 
     const barberMailOptions = {
       from: `"Dorm Barbershop System" <${process.env.EMAIL_USER}>`,
-      to: process.env.EMAIL_USER,
+      to: `${process.env.EMAIL_USER}, jrajm.de@gmail.com`,
       subject: '📅 New Appointment Booked!',
       html: `
         <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #111111; background-color: #F5F5F5; padding: 20px; border-radius: 12px; border: 1px solid #e0e0e0;">
